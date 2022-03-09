@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poi-deployment
+  labels:
+    app: tripinsights-poi
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tripinsights-poi
+  template:
+    metadata:
+      labels:
+        app: tripinsights-poi
+    spec:
+      containers:
+      - name: tripinsights-poi
+        image: cropenhackcontainers.azurecr.io/tripinsights/poi:1.0
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 80
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: "Production"
+        envFrom:
+          - secretRef:
+              name: secret-database
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: poi-service
+spec:
+  selector:
+    app: tripinsights-poi
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
