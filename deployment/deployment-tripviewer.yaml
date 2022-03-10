@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tripviewer-deployment
+  namespace: web
+  labels:
+    app: tripinsights-tripviewer
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tripinsights-tripviewer
+  template:
+    metadata:
+      labels:
+        app: tripinsights-tripviewer
+    spec:
+      containers:
+      - name: tripinsights-tripviewer
+        image: cropenhackcontainers2.azurecr.io/tripinsights/tripviewer:1.0
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 80
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: "Production"
+          - name: USERPROFILE_API_ENDPOINT
+            value: "http://userprofile-service.api.svc.cluster.local:80"
+          - name: TRIPS_API_ENDPOINT
+            value: "http://trips-service.api.svc.cluster.local:80"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tripviewer-service
+  namespace: web
+spec:
+  selector:
+    app: tripinsights-tripviewer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer

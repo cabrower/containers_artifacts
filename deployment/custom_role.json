@@ -1,0 +1,15 @@
+{
+    "Name": "AKSPrivateClusterInvoke",
+    "IsCustom": true,
+    "Description": "",
+    "Actions": [
+        "Microsoft.ContainerService/managedClusters/commandResults/read",
+        "Microsoft.ContainerService/managedClusters/runCommand/action"
+    ],
+    "NotActions": [],
+    "DataActions": [],
+    "NotDataActions": [],
+    "AssignableScopes": [
+      "/subscriptions/427f87aa-c43c-4f6c-bfe1-c213b85cfb6a"
+    ]
+  }

@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: poi-deployment
+  name: user-java-deployment
   namespace: api
   labels:
-    app: tripinsights-poi
+    app: tripinsights-user-java
 
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: tripinsights-poi
+      app: tripinsights-user-java
   template:
     metadata:
       labels:
-        app: tripinsights-poi
+        app: tripinsights-user-java
     spec:
       containers:
-      - name: tripinsights-poi
-        image: cropenhackcontainers2.azurecr.io/tripinsights/poi:1.0
+      - name: tripinsights-user-java
+        image: cropenhackcontainers2.azurecr.io/tripinsights/user-java:1.0
         imagePullPolicy: Always
         ports:
           - containerPort: 80
@@ -39,11 +39,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: poi-service
+  name: user-java-service
   namespace: api
 spec:
   selector:
-    app: tripinsights-poi
+    app: tripinsights-user-java
   ports:
     - protocol: TCP
       port: 80
