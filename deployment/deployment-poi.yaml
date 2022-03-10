@@ -35,6 +35,17 @@ spec:
         envFrom:
           - secretRef:
               name: secret-database
+        volumeMounts:
+        - mountPath: /mnt/secrets-store
+          name: secrets-store01-inline
+          readOnly: true
+      volumes:
+      - csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: azure-kvname-user-msi
+        name: secrets-store01-inline
 ---
 apiVersion: v1
 kind: Service

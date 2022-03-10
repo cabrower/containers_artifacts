@@ -11,4 +11,11 @@ metadata:
   name: api
   labels:
     name: api
-
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: nginx
+  labels:
+    name: nginx
+    openservicemesh.io/monitored-by: osm

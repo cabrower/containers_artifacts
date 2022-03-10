@@ -1,0 +1,93 @@
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: openhack-ingress  
+  namespace: web
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: tripviewer-service
+            port:
+              number: 80
+---
+kind: IngressBackend
+apiVersion: policy.openservicemesh.io/v1alpha1
+metadata:
+  name: openhack-ingress
+  namespace: web
+spec:
+  backends:
+  - name: tripviewer-service
+    port:
+      number: 80
+      protocol: http
+  sources:
+  - kind: Service
+    namespace: "nginx"
+    name: "openhack-ingress-nginx-controller"
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: openhack-ingress-api
+  namespace: api
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: /api/poi
+        backend:
+          service:
+            name: poi-service
+            port:
+              number: 80
+      - pathType: Prefix
+        path: /api/trips
+        backend:
+          service:
+            name: trips-service
+            port:
+              number: 80
+      - pathType: Prefix
+        path: /api/user
+        backend:
+          service:
+            name: userprofile-service
+            port:
+              number: 80
+      - pathType: Prefix
+        path: /api/user-java
+        backend:
+          service:
+            name: user-java-service
+            port:
+              number: 80
+
+---
+kind: IngressBackend
+apiVersion: policy.openservicemesh.io/v1alpha1
+metadata:
+  name: openhack-ingress-api
+  namespace: api
+spec:
+  backends:
+  - name: trips-service
+    port:
+      number: 80
+      protocol: http
+  sources:
+  - kind: Service
+    namespace: "nginx"
+    name: "openhack-ingress-nginx-controller"

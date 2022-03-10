@@ -1,0 +1,11 @@
+controller:
+  ingressClass: 'openhack-ingress'
+  replicaCount: 1
+  service:
+    annotations:
+      service.beta.kubernetes.io/azure-dns-label-name: openhack-team3
+  config:
+    worker-processes: '1'
+serviceAccount:
+  create: true
+  name: openhack-sa
